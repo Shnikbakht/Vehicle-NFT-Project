@@ -43,7 +43,7 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
     event PriceUpdated(uint256 tokenId, uint256 newPrice);
     event VehicleListedForSale(uint256 tokenId, uint256 price);
 
-    constructor() ERC721("VehicleNFT", "VNFT") Ownable() {}
+    constructor() ERC721("VehicleNFT", "VNFT") Ownable(msg.sender) {}
 
     /// @dev Modifier to allow only authorized manufacturers to call certain functions
     modifier onlyAuthorizedManufacturer() {
