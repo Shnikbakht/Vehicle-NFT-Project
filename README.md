@@ -100,7 +100,7 @@ The uploadMetadata.js script uses Pinata to upload vehicle metadata to IPFS:
 ### Clone the Repository
 
 ```sh
-git clone https://github.com/your-repository-url.git
+git clone https://github.com/Shnikbakht/Vehicle-NFT-Project
 cd your-repository-folder
 ```
 
