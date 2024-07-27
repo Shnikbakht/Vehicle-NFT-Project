@@ -84,11 +84,146 @@ Provides functionality for vehicle owners to report their vehicles as stolen. On
 - Signature Validation: Uses ECDSA and SignatureChecker to ensure that only valid signatures are accepted for minting new vehicles.
 - Merkle Tree Verification: Provides a method to verify the integrity of off-chain data using Merkle proofs.
 
-#### Deployment
-
 ## Metadata Upload
 
 The uploadMetadata.js script uses Pinata to upload vehicle metadata to IPFS:
+
+# Usage and Deployment
+
+### Prerequisites
+
+- Node.js: Ensure Node.js is installed. It can be downloaded from nodejs.org.
+- npm: Comes with Node.js or can be installed separately.
+
+## Setting Up the Project
+
+### Clone the Repository
+
+```sh
+git clone https://github.com/your-repository-url.git
+cd your-repository-folder
+```
+
+### Install Dependencies
+
+```sh
+npm install
+```
+
+### Create Environment File
+
+Create a .env file in the root of the project directory.
+Add the following environment variables to .env:
+
+```sh
+INFURA_PROJECT_ID=your_infura_project_id
+PRIVATE_KEY=your_private_key
+ETHERSCAN_API_KEY=your_etherscan_api_key
+```
+
+### Configuring Hardhat
+
+The Hardhat configuration is located in hardhat.config.js. It includes settings for different networks:
+
+- Sepolia: A test network using Infura.
+- Localhost: A local Ethereum node running on port 8545.
+- Ganache: A local blockchain emulator running on port 7545.
+
+### Running the Project
+
+Start Local Blockchain (for Localhost or Ganache)
+
+If using Localhost:
+
+```sh
+npx hardhat node
+```
+
+If using Ganache, make sure Ganache is running.
+
+### Deploy Contracts
+
+- For Sepolia:
+
+````sh
+npx hardhat run scripts/deploy.js --network sepolia
+```-
+For Localhost:
+
+```sh
+npx hardhat run scripts/deploy.js --network localhost
+````
+
+- For Ganache:
+
+```sh
+npx hardhat run scripts/deploy.js --network ganache
+```
+
+### Verify Contracts on Etherscan
+
+```sh
+npx hardhat verify --network sepolia <contract-address> <constructor-arguments>
+```
+
+# Storing Metadata Using IPFS and Pinata
+
+This project uses IPFS and Pinata to store and pin vehicle metadata. IPFS ensures decentralized storage, and Pinata simplifies interactions with IPFS.
+
+### Prepare Your Environment:
+
+- Install Dependencies: Ensure Node.js is installed. Then, install the necessary packages:
+
+```sh
+npm install axios dotenv
+```
+
+### Set Up Environment Variables: Create a .env file in your project root directory with your Pinata API keys:
+
+```sh
+PINATA_API_KEY=your_pinata_api_key
+PINATA_API_SECRET=your_pinata_api_secret
+```
+
+### Upload Metadata:
+
+Use the uploadMetadata.js script to upload vehicle metadata to IPFS. This script will print the IPFS hash for each vehicle's metadata.
+
+### Running the Script:
+
+```sh
+node uploadMetadata.js
+```
+
+- Script Details: The uploadMetadata.js script uploads the defined vehicle metadata to IPFS using Pinata. The IPFS hashes are printed to the console for each entry in the metadata array.
+
+### Verifying the Merkle Root
+
+Verifying a Merkle root involves checking if a given piece of data is part of a Merkle tree using a Merkle proof.
+
+### Retrieve the Merkle Root:
+
+Obtain the Merkle root from the smart contract. Use the getVehicleMerkleRoot function:
+
+```sh
+const merkleRoot = await contract.getVehicleMerkleRoot(tokenId);
+```
+
+### Prepare the Leaf and Proof:
+
+- Compute the Leaf Node Hash: Hash the vehicle metadata:
+
+```sh
+const leaf = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(JSON.stringify(metadata)));
+```
+
+### Get the Merkle Proof:
+
+This proof is generated when creating the Merkle tree. It should be a list of hashes necessary to validate the leaf node.
+
+### Verify the Merkle Proof:
+
+Smart Contract Function:
 
 ## Conclusion
 
