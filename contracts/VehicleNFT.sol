@@ -43,7 +43,7 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
     event PriceUpdated(uint256 tokenId, uint256 newPrice);
     event VehicleListedForSale(uint256 tokenId, uint256 price);
 
-    constructor() ERC721("VehicleNFT", "VNFT") Ownable(msg.sender) {}
+    constructor() ERC721("VehicleNFT", "VNFT") Ownable() {}
 
     /// @dev Modifier to allow only authorized manufacturers to call certain functions
     modifier onlyAuthorizedManufacturer() {
@@ -222,5 +222,31 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
     ) external view returns (bool) {
         bytes32 root = vehicles[tokenId].merkleRoot;
         return verifyMerkleProof(root, proof, leaf);
+    }
+
+    /// @notice Verifies a Merkle proof against a root
+    /// @param root The Merkle root
+    /// @param proof The Merkle proof to verify
+    /// @param leaf The leaf node to verify
+    /// @return True if the proof is valid, false otherwise
+    function verifyMerkleProof(
+        bytes32 root,
+        bytes32[] calldata proof,
+        bytes32 leaf
+    ) public pure returns (bool) {
+        bytes32 computedHash = leaf;
+        for (uint256 i = 0; i < proof.length; i++) {
+            bytes32 proofElement = proof[i];
+            if (computedHash < proofElement) {
+                computedHash = keccak256(
+                    abi.encodePacked(computedHash, proofElement)
+                );
+            } else {
+                computedHash = keccak256(
+                    abi.encodePacked(proofElement, computedHash)
+                );
+            }
+        }
+        return computedHash == root;
     }
 }
