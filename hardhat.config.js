@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-ethers");
+require('solidity-coverage');
 //require('@nomiclabs/hardhat-ethers');
 require('dotenv').config();
 
