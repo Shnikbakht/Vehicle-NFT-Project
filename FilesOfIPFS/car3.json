@@ -1,0 +1,39 @@
+{
+  "name": "Vehicle #3",
+  "description": "This is a vehicle with tokenId 3",
+  "image": "https://ipfs.io/ipfs/QmRk45u3N9UD4iuttDEfyVB9T2WCQgGamoJzvvJB1hojN9?filename=car3.png",
+  "attributes": [
+    {
+      "trait_type": "Manufacturer",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "Model",
+      "value": "328i"
+    },
+    {
+      "trait_type": "Year",
+      "value": "2018"
+    },
+    {
+      "trait_type": "Token ID",
+      "value": "3"
+    },
+    {
+      "trait_type": "Make",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "VIN",
+      "value": "WBA8E9C54J1234567"
+    },
+    {
+      "trait_type": "Color",
+      "value": "Black"
+    },
+    {
+      "trait_type": "Features",
+      "value": "Sunroof, Harman Kardon Surround Sound, Rearview Camera, Wireless Charging"
+    }
+  ]
+}

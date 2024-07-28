@@ -73,11 +73,13 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
     }
 
     /// @notice Authorizes a manufacturer to mint vehicles
-    /// @param manufacturer The address of the manufacturer to authorize
-    function authorizeManufacturer(address manufacturer) external onlyOwner {
-        authorizedManufacturers[manufacturer] = true;
-        emit ManufacturerAuthorized(manufacturer);
-    }
+/// @param manufacturer The address of the manufacturer to authorize
+function authorizeManufacturer(address manufacturer) external onlyOwner {
+    require(manufacturer != address(0), "Invalid address"); // Check for invalid address
+    authorizedManufacturers[manufacturer] = true;
+    emit ManufacturerAuthorized(manufacturer);
+}
+
 
     /// @notice Certifies a user to purchase vehicles
     /// @param user The address of the user to certify

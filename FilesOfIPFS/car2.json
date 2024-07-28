@@ -1,0 +1,39 @@
+{
+  "name": "Vehicle #2",
+  "description": "This is a vehicle with tokenId 2",
+  "image": "https://ipfs.io/ipfs/QmfQTaJzpSLUyxFEyrBDBNyTjucKnVuPd4TmNJfdbcSzeq?filename=car2.png",
+  "attributes": [
+    {
+      "trait_type": "Manufacturer",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "Model",
+      "value": "M3"
+    },
+    {
+      "trait_type": "Year",
+      "value": "2021"
+    },
+    {
+      "trait_type": "Token ID",
+      "value": "2"
+    },
+    {
+      "trait_type": "Make",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "VIN",
+      "value": "WBS8M9C52J1234567"
+    },
+    {
+      "trait_type": "Color",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Features",
+      "value": "Adaptive Cruise Control, Leather Seats, Navigation System, Bluetooth Connectivity"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Vehicle #4",
+  "description": "This is a vehicle with tokenId 4",
+  "image": "https://ipfs.io/ipfs/QmQzbS7cyorKJMYpPJvc8jppVWuG5PqwmkcgG6BdnCCdjy?filename=car4.png",
+  "attributes": [
+    {
+      "trait_type": "Manufacturer",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "Model",
+      "value": "X3"
+    },
+    {
+      "trait_type": "Year",
+      "value": "2022"
+    },
+    {
+      "trait_type": "Token ID",
+      "value": "4"
+    },
+    {
+      "trait_type": "Make",
+      "value": "BMW"
+    },
+    {
+      "trait_type": "VIN",
+      "value": "5UXTR9C54L1234567"
+    },
+    {
+      "trait_type": "Color",
+      "value": "Gray"
+    },
+    {
+      "trait_type": "Features",
+      "value": "All-Wheel Drive, Navigation System, Adaptive Cruise Control, Bluetooth Connectivity"
+    }
+  ]
+}
