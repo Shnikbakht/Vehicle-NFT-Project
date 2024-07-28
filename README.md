@@ -146,18 +146,18 @@ If using Ganache, make sure Ganache is running.
 - For Sepolia:
 
 ````sh
-npx hardhat run scripts/deploy.js --network sepolia
+npx hardhat run ignition/modules/deploy.js --network sepolia
 ```-
 For Localhost:
 
 ```sh
-npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run ignition/modules/deploy.js --network localhost
 ````
 
 - For Ganache:
 
 ```sh
-npx hardhat run scripts/deploy.js --network ganache
+npx hardhat run ignition/modules/deploy.js --network ganache
 ```
 
 ### Verify Contracts on Etherscan
@@ -168,9 +168,43 @@ npx hardhat verify --network sepolia <contract-address> <constructor-arguments>
 
 # Storing Metadata Using IPFS and Pinata
 
-This project uses IPFS and Pinata to store and pin vehicle metadata. IPFS ensures decentralized storage, and Pinata simplifies interactions with IPFS.
+In this project, we leverage IPFS (InterPlanetary File System) for decentralized storage of vehicle metadata, and Pinata for simplified interactions with IPFS. This approach ensures that the metadata is stored in a distributed manner, enhancing its reliability and accessibility.
 
-### Prepare Your Environment:
+We have stored metadata for four vehicles on IPFS. Below are the Content Identifiers (CIDs) for each vehicle's metadata. These CIDs can be used for verification purposes, and the Merkle root has been computed based on these CIDs:
+
+- Vehicle Metadata 1: QmbFVMpqb7SkR6nutocgGPgYww5XxHSiqNx9tzGkuStCGJ
+- Vehicle Metadata 2: QmU5UUiU3aVAhqJapPrVC378fb6GZjEiqr2FxbcqUVEgZb
+- Vehicle Metadata 3: QmXY6f6ShgRagae7vYqzwSTk71BEpxqHHFQD6wHCobCYa8
+- Vehicle Metadata 4: QmfL6vtCpLfb42RWuUnSQPpNtyC19dk8WJ2aJseVWHQxNa
+
+These CIDs are integral to the system as the Merkle root is derived from them, ensuring the integrity and consistency of the vehicle metadata stored on IPFS.
+
+### Uploading Metadata to IPFS
+
+To upload vehicle metadata to IPFS using Pinata, you can use the uploadMetadata.js script provided in the project. This script facilitates the uploading process and handles interaction with Pinata.
+
+Configure the uploadMetadata.js script with your Pinata API key and secret. Instructions for this can be found within the script.
+
+Run the script to upload your metadata:
+
+```sh
+node uploadMetadata.js
+```
+
+The script will output the CIDs for each uploaded metadata file, which you can use for verification and further processing.
+
+### Calculating the Merkle Root
+
+To calculate the Merkle root from these CIDs, you can use the calculateMerkleRoot.js file provided in the project. This script processes the CIDs to compute the root hash, which is used in the smart contract for verification.
+Run the script:
+
+```sh
+node calculateMerkleRoot.js
+```
+
+The script will output the Merkle root, which you can compare with the root used in the smart contract.
+
+#### Prepare Your Environment:
 
 - Install Dependencies: Ensure Node.js is installed. Then, install the necessary packages:
 
@@ -178,7 +212,9 @@ This project uses IPFS and Pinata to store and pin vehicle metadata. IPFS ensure
 npm install axios dotenv
 ```
 
-### Set Up Environment Variables: Create a .env file in your project root directory with your Pinata API keys:
+#### Set Up Environment Variables:
+
+Create a .env file in your project root directory with your Pinata API keys:
 
 ```sh
 PINATA_API_KEY=your_pinata_api_key
@@ -196,34 +232,6 @@ node uploadMetadata.js
 ```
 
 - Script Details: The uploadMetadata.js script uploads the defined vehicle metadata to IPFS using Pinata. The IPFS hashes are printed to the console for each entry in the metadata array.
-
-### Verifying the Merkle Root
-
-Verifying a Merkle root involves checking if a given piece of data is part of a Merkle tree using a Merkle proof.
-
-### Retrieve the Merkle Root:
-
-Obtain the Merkle root from the smart contract. Use the getVehicleMerkleRoot function:
-
-```sh
-const merkleRoot = await contract.getVehicleMerkleRoot(tokenId);
-```
-
-### Prepare the Leaf and Proof:
-
-- Compute the Leaf Node Hash: Hash the vehicle metadata:
-
-```sh
-const leaf = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(JSON.stringify(metadata)));
-```
-
-### Get the Merkle Proof:
-
-This proof is generated when creating the Merkle tree. It should be a list of hashes necessary to validate the leaf node.
-
-### Verify the Merkle Proof:
-
-Smart Contract Function:
 
 ## Conclusion
 
