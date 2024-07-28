@@ -233,6 +233,20 @@ node uploadMetadata.js
 
 - Script Details: The uploadMetadata.js script uploads the defined vehicle metadata to IPFS using Pinata. The IPFS hashes are printed to the console for each entry in the metadata array.
 
+## Testing and Coverage
+
+The project includes comprehensive tests written using Hardhat, ensuring that all functionalities are thoroughly validated. The tests cover various aspects of the smart contract.
+Use Hardhat's coverage tool to run the tests and generate a coverage report:
+
+```sh
+npx hardhat coverage
+```
+
+- View Coverage Report:
+  After running the command, a coverage report will be generated in the coverage directory. Open the index.html file in a browser to review the coverage details.
+
+The coverage report will show that all functions and lines of code are tested, validating the correctness and reliability of the smart contract.
+
 ## Conclusion
 
 The VehicleNFT smart contract is designed to manage vehicle ownership using blockchain technology efficiently. By integrating off-chain data verification and signature validation, it ensures secure and reliable operations.
