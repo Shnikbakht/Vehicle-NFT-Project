@@ -32,16 +32,11 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
         address manufacturer,
         bytes32 merkleRoot
     );
-    event OwnershipTransferred(
-        uint256 tokenId,
-        address from,
-        address to,
-        uint256 price
-    );
+    event VehicleListedForSale(uint256 tokenId, uint256 price);
+    event VehiclePurchased(uint256 tokenId, address previousOwner, address newOwner, uint256 price);
     event VehicleReportedStolen(uint256 tokenId);
     event StolenStatusConfirmed(uint256 tokenId);
     event PriceUpdated(uint256 tokenId, uint256 newPrice);
-    event VehicleListedForSale(uint256 tokenId, uint256 price);
 
     constructor() ERC721("VehicleNFT", "VNFT") Ownable(msg.sender) {}
 
@@ -73,13 +68,12 @@ contract VehicleNFT is ERC721URIStorage, Ownable {
     }
 
     /// @notice Authorizes a manufacturer to mint vehicles
-/// @param manufacturer The address of the manufacturer to authorize
-function authorizeManufacturer(address manufacturer) external onlyOwner {
-    require(manufacturer != address(0), "Invalid address"); // Check for invalid address
-    authorizedManufacturers[manufacturer] = true;
-    emit ManufacturerAuthorized(manufacturer);
-}
-
+    /// @param manufacturer The address of the manufacturer to authorize
+    function authorizeManufacturer(address manufacturer) external onlyOwner {
+        require(manufacturer != address(0), "Invalid address"); // Check for invalid address
+        authorizedManufacturers[manufacturer] = true;
+        emit ManufacturerAuthorized(manufacturer);
+    }
 
     /// @notice Certifies a user to purchase vehicles
     /// @param user The address of the user to certify
@@ -166,7 +160,7 @@ function authorizeManufacturer(address manufacturer) external onlyOwner {
 
         payable(currentOwner).transfer(msg.value);
 
-        emit OwnershipTransferred(tokenId, currentOwner, msg.sender, msg.value);
+        emit VehiclePurchased(tokenId, currentOwner, msg.sender, msg.value);
     }
 
     /// @notice Sets a new price for a vehicle
@@ -192,17 +186,20 @@ function authorizeManufacturer(address manufacturer) external onlyOwner {
     /// @param tokenId The ID of the vehicle to confirm
     function confirmStolen(uint256 tokenId) external onlyOwner {
         require(vehicles[tokenId].isStolen, "Vehicle not reported stolen");
-        vehicles[tokenId].isStolen = true;
         emit StolenStatusConfirmed(tokenId);
     }
 
-    /// @notice Gets the Merkle root of a vehicle
-    /// @param tokenId The ID of the vehicle
-    /// @return The Merkle root of the vehicle
+   
+ /// @notice Retrieves the Merkle root for a given vehicle token ID.
+ ///  @param tokenId The ID of the vehicle token.
+ ///  @return The Merkle root associated with the given token ID.
+ /// @dev Reverts if the token ID does not exist.
+
     function getVehicleMerkleRoot(
-        uint256 tokenId
+    uint256 tokenId
     ) external view returns (bytes32) {
-        return vehicles[tokenId].merkleRoot;
+    require(_ownerOf(tokenId) != address(0), "VehicleNFT: Token ID does not exist");
+    return vehicles[tokenId].merkleRoot;
     }
 
     /// @notice Checks if a vehicle has been reported stolen
@@ -223,7 +220,7 @@ function authorizeManufacturer(address manufacturer) external onlyOwner {
         bytes32 leaf
     ) external view returns (bool) {
         bytes32 root = vehicles[tokenId].merkleRoot;
-        return verifyMerkleProof(root, proof, leaf);
+        return _verifyMerkleProof(root, proof, leaf);
     }
 
     /// @notice Verifies a Merkle proof against a root
@@ -231,7 +228,7 @@ function authorizeManufacturer(address manufacturer) external onlyOwner {
     /// @param proof The Merkle proof to verify
     /// @param leaf The leaf node to verify
     /// @return True if the proof is valid, false otherwise
-    function verifyMerkleProof(
+    function _verifyMerkleProof(
         bytes32 root,
         bytes32[] calldata proof,
         bytes32 leaf

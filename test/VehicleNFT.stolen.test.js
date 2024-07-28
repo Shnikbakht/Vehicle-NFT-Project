@@ -6,8 +6,7 @@ describe("VehicleNFT Stolen Functions", function () {
   let merkleRoot, price, signature, newItemId;
 
   beforeEach(async function () {
-    const chai = await import("chai");
-    expect = chai.expect;
+
     VehicleNFT = await ethers.getContractFactory("VehicleNFT");
     [owner, manufacturer, user, ...addrs] = await ethers.getSigners();
     vehicleNFT = await VehicleNFT.deploy();
@@ -57,10 +56,10 @@ describe("VehicleNFT Stolen Functions", function () {
         .withArgs(newItemId);
     });
 
-    it("Should not allow non-owner to confirm stolen status", async function () {
+    it("Should not allow non-regulatory authorities to confirm stolen status", async function () {
       await vehicleNFT.connect(manufacturer).reportStolen(newItemId);
       await expect(vehicleNFT.connect(user).confirmStolen(newItemId))
-        .to.be.revertedWith("Ownable: caller is not the owner");
+        .to.be.revertedWith("OwnableUnauthorizedAccount");
     });
 
     it("Should not allow confirming a non-reported vehicle", async function () {
